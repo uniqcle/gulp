@@ -4,6 +4,7 @@ const sass = require("gulp-sass")(require("sass"));
 const clean = require("gulp-clean");
 const fs = require("fs");
 const server = require("gulp-server-livereload");
+const sourceMaps = require("gulp-sourcemaps");
 
 ////////////////////////////////////////
 // clear dist folder
@@ -36,8 +37,17 @@ gulp.task("html", function () {
 gulp.task("sass", function () {
   return gulp
     .src("./src/scss/*.scss")
+    .pipe(sourceMaps.init())
     .pipe(sass())
+    .pipe(sourceMaps.write())
     .pipe(gulp.dest("./dist/css"));
+});
+
+////////////////////////////////////////
+// copy images
+////////////////////////////////////////
+gulp.task("images", function () {
+  return gulp.src("./src/imgs/**/*").pipe(gulp.dest("./dist/imgs/"));
 });
 
 ////////////////////////////////////////
@@ -55,10 +65,10 @@ gulp.task("server", function () {
 ////////////////////////////////////////
 // watch task
 ////////////////////////////////////////
-gulp.task('watch', function () {
-  gulp.watch('./src/scss/*/*.scss', gulp.parallel('sass')); 
-  gulp.watch('./src/**/*.html', gulp.parallel('html')); 
-})
+gulp.task("watch", function () {
+  gulp.watch("./src/scss/*/*.scss", gulp.parallel("sass"));
+  gulp.watch("./src/**/*.html", gulp.parallel("html"));
+});
 
 ////////////////////////////////////////
 // default task
@@ -67,6 +77,7 @@ gulp.task(
   "default",
   gulp.series(
     "clean",
-    gulp.parallel("html", "sass"),
-    gulp.parallel("server", "watch"))
+    gulp.parallel("html", "sass", "images"),
+    gulp.parallel("server", "watch")
+  )
 ); 
