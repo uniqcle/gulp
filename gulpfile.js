@@ -1,5 +1,6 @@
 const gulp = require("gulp");
 const fileInclude = require("gulp-file-include");
+const sass = require("gulp-sass")(require("sass"));
 
 ////////////////////////////////////////
 // индклудинг html файлов
@@ -14,4 +15,14 @@ gulp.task("html", function () {
     .src("./src/*.html")
     .pipe(fileInclude(fileIncludeOptions))
     .pipe(gulp.dest("./dist/"));
+});
+
+////////////////////////////////////////
+// компиляция scss
+////////////////////////////////////////
+gulp.task("sass", function () {
+  return gulp
+    .src("./src/scss/*.scss")
+    .pipe(sass())
+    .pipe(gulp.dest("./dist/css"));
 });
