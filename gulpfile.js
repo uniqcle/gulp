@@ -8,10 +8,11 @@ const server = require("gulp-server-livereload");
 ////////////////////////////////////////
 // clear dist folder
 ////////////////////////////////////////
-gulp.task("clear", function (done) {
+gulp.task("clean", function (done) {
   if (fs.existsSync("./dist/")) {
     return gulp.src("./dist/", { read: false }).pipe(clean({ force: true }));
   }
+  done();
 });
 
 ////////////////////////////////////////
@@ -50,3 +51,11 @@ gulp.task("server", function () {
     })
   );
 });
+
+////////////////////////////////////////
+// default task
+////////////////////////////////////////
+gulp.task(
+  "default",
+  gulp.series("clean", gulp.parallel("html", "sass"), gulp.parallel("server"))
+); 
