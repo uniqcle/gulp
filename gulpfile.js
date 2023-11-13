@@ -53,9 +53,20 @@ gulp.task("server", function () {
 });
 
 ////////////////////////////////////////
+// watch task
+////////////////////////////////////////
+gulp.task('watch', function () {
+  gulp.watch('./src/scss/*/*.scss', gulp.parallel('sass')); 
+  gulp.watch('./src/**/*.html', gulp.parallel('html')); 
+})
+
+////////////////////////////////////////
 // default task
 ////////////////////////////////////////
 gulp.task(
   "default",
-  gulp.series("clean", gulp.parallel("html", "sass"), gulp.parallel("server"))
+  gulp.series(
+    "clean",
+    gulp.parallel("html", "sass"),
+    gulp.parallel("server", "watch"))
 ); 
