@@ -3,6 +3,7 @@ const fileInclude = require("gulp-file-include");
 const sass = require("gulp-sass")(require("sass"));
 const clean = require("gulp-clean");
 const fs = require("fs");
+const server = require("gulp-server-livereload");
 
 ////////////////////////////////////////
 // clear dist folder
@@ -36,4 +37,16 @@ gulp.task("sass", function () {
     .src("./src/scss/*.scss")
     .pipe(sass())
     .pipe(gulp.dest("./dist/css"));
+});
+
+////////////////////////////////////////
+// старт лайв сервера
+////////////////////////////////////////
+gulp.task("server", function () {
+  return gulp.src("./dist/").pipe(
+    server({
+      livereload: true,
+      open: true,
+    })
+  );
 });
