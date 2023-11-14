@@ -9,6 +9,8 @@ const sourceMaps = require("gulp-sourcemaps");
 const plumber = require('gulp-plumber'); 
 const notify = require('gulp-notify'); 
 const webpack = require("webpack-stream");
+const babel = require("gulp-babel");
+const imagemin = require("gulp-imagemin");
 
 //optimization function
 const plumberNotify = (title) => {
@@ -67,7 +69,10 @@ gulp.task("sass", function () {
 // copy images
 ////////////////////////////////////////
 gulp.task("images", function () {
-  return gulp.src("./src/imgs/**/*").pipe(gulp.dest("./dist/imgs/"));
+  return gulp
+    .src("./src/imgs/**/*")
+    .pipe(imagemin({ verbose: true }))
+    .pipe(gulp.dest("./dist/imgs/"));
 });
 
 ////////////////////////////////////////
@@ -88,6 +93,7 @@ gulp.task("js", function () {
   return gulp
     .src("./src/js/*.js")
     .pipe(plumber(plumberNotify("JS")))
+    .pipe(babel())
     .pipe(webpack(require("./webpack.config.js")))
     .pipe(gulp.dest("./dist/js"));
 });
