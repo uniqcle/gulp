@@ -66,7 +66,7 @@ gulp.task("server", function () {
 // watch task
 ////////////////////////////////////////
 gulp.task("watch", function () {
-  gulp.watch("./src/scss/*/*.scss", gulp.parallel("sass"));
+  gulp.watch("./src/scss/**/*.scss", gulp.parallel("sass"));
   gulp.watch("./src/**/*.html", gulp.parallel("html"));
   gulp.watch("./src/imgs/**/*", gulp.parallel("images"));
 });
