@@ -74,6 +74,19 @@ gulp.task("images", function () {
   return gulp.src("./src/imgs/**/*").pipe(gulp.dest("./dist/imgs/"));
 });
 
+
+////////////////////////////////////////
+// copy fonts, files
+////////////////////////////////////////
+gulp.task("fonts", function () {
+  return gulp.src("./src/fonts/**/*").pipe(gulp.dest("./dist/fonts/"));
+});
+
+gulp.task("files", function () {
+  return gulp.src("./src/files/**/*").pipe(gulp.dest("./dist/files/"));
+});
+
+
 ////////////////////////////////////////
 // старт лайв сервера
 ////////////////////////////////////////
@@ -93,6 +106,8 @@ gulp.task("watch", function () {
   gulp.watch("./src/scss/**/*.scss", gulp.parallel("sass"));
   gulp.watch("./src/**/*.html", gulp.parallel("html"));
   gulp.watch("./src/imgs/**/*", gulp.parallel("images"));
+  gulp.watch("./src/fonts/**/*", gulp.parallel("fonts"));
+  gulp.watch("./src/files/**/*", gulp.parallel("files"));
 });
 
 ////////////////////////////////////////
@@ -102,7 +117,7 @@ gulp.task(
   "default",
   gulp.series(
     "clean",
-    gulp.parallel("html", "sass", "images"),
+    gulp.parallel("html", "sass", "images", "fonts", "files"),
     gulp.parallel("server", "watch")
   )
 ); 
