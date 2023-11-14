@@ -11,6 +11,7 @@ const notify = require('gulp-notify');
 const webpack = require("webpack-stream");
 const babel = require("gulp-babel");
 const imagemin = require("gulp-imagemin");
+const changed = require("gulp-changed");
 
 //optimization function
 const plumberNotify = (title) => {
@@ -71,6 +72,7 @@ gulp.task("sass", function () {
 gulp.task("images", function () {
   return gulp
     .src("./src/imgs/**/*")
+    .pipe(changed("./dist/imgs/"))
     .pipe(imagemin({ verbose: true }))
     .pipe(gulp.dest("./dist/imgs/"));
 });
