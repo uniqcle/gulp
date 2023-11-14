@@ -45,6 +45,7 @@ const fileIncludeOptions = {
 gulp.task("html", function () {
   return gulp
     .src("./src/*.html")
+    .pipe(changed("./dist/"))
     .pipe(plumber(plumberNotify("HTML")))
     .pipe(fileInclude(fileIncludeOptions))
     .pipe(gulp.dest("./dist/"));
@@ -57,6 +58,7 @@ gulp.task("sass", function () {
   return (
     gulp
       .src("./src/scss/*.scss")
+      .pipe(changed("./dist/css/"))
       .pipe(plumber(plumberNotify("Styles")))
       .pipe(sourceMaps.init())
       .pipe(sass())
@@ -81,11 +83,17 @@ gulp.task("images", function () {
 // copy fonts, files
 ////////////////////////////////////////
 gulp.task("fonts", function () {
-  return gulp.src("./src/fonts/**/*").pipe(gulp.dest("./dist/fonts/"));
+  return gulp
+    .src("./src/fonts/**/*")
+    .pipe(changed("./dist/fonts/"))
+    .pipe(gulp.dest("./dist/fonts/"));
 });
 
 gulp.task("files", function () {
-  return gulp.src("./src/files/**/*").pipe(gulp.dest("./dist/files/"));
+  return gulp
+    .src("./src/files/**/*")
+    .pipe(changed("./dist/files/"))
+    .pipe(gulp.dest("./dist/files/"));
 });
 
 ////////////////////////////////////////
@@ -94,10 +102,11 @@ gulp.task("files", function () {
 gulp.task("js", function () {
   return gulp
     .src("./src/js/*.js")
+    .pipe(changed("./dist/js/"))
     .pipe(plumber(plumberNotify("JS")))
     .pipe(babel())
     .pipe(webpack(require("./webpack.config.js")))
-    .pipe(gulp.dest("./dist/js"));
+    .pipe(gulp.dest("./dist/js/"));
 });
 
 ////////////////////////////////////////
