@@ -5,7 +5,9 @@ const clean = require("gulp-clean");
 const fs = require("fs");
 const server = require("gulp-server-livereload");
 const sourceMaps = require("gulp-sourcemaps");
-const groupMedia = require("gulp-group-css-media-queries"); // вступает в конфликт с source maps
+//const groupMedia = require("gulp-group-css-media-queries"); // вступает в конфликт с source maps
+const plumber = require('gulp-plumber'); 
+const notify = require('gulp-notify'); 
 
 ////////////////////////////////////////
 // clear dist folder
@@ -25,9 +27,18 @@ const fileIncludeOptions = {
   basepath: "@file",
 };
 
+const plumberHtmlOptions = {
+  errorHandler: notify.onError({
+    title: "HTML",
+    message: "Error <%= error.message %>",
+    sound: false,
+  }),
+};
+
 gulp.task("html", function () {
   return gulp
     .src("./src/*.html")
+    .pipe(plumber(plumberHtmlOptions))
     .pipe(fileInclude(fileIncludeOptions))
     .pipe(gulp.dest("./dist/"));
 });
@@ -35,14 +46,25 @@ gulp.task("html", function () {
 ////////////////////////////////////////
 // компиляция scss
 ////////////////////////////////////////
+const plumberSassOptions = {
+  errorHandler: notify.onError({
+    title: 'Styles', 
+    message: 'Error <%= error.message %>', 
+    sound: false
+  })
+}
+
 gulp.task("sass", function () {
-  return gulp
-    .src("./src/scss/*.scss")
-    .pipe(sourceMaps.init())
-    .pipe(sass())
-    .pipe(groupMedia())
-    .pipe(sourceMaps.write())
-    .pipe(gulp.dest("./dist/css"));
+  return (
+    gulp
+      .src("./src/scss/*.scss")
+      .pipe(plumber(plumberSassOptions))
+      .pipe(sourceMaps.init())
+      .pipe(sass())
+      //.pipe(groupMedia())
+      .pipe(sourceMaps.write())
+      .pipe(gulp.dest("./dist/css"))
+  );
 });
 
 ////////////////////////////////////////
