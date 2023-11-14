@@ -8,6 +8,7 @@ const sourceMaps = require("gulp-sourcemaps");
 //const groupMedia = require("gulp-group-css-media-queries"); // вступает в конфликт с source maps
 const plumber = require('gulp-plumber'); 
 const notify = require('gulp-notify'); 
+const webpack = require("webpack-stream");
 
 //optimization function
 const plumberNotify = (title) => {
@@ -69,7 +70,6 @@ gulp.task("images", function () {
   return gulp.src("./src/imgs/**/*").pipe(gulp.dest("./dist/imgs/"));
 });
 
-
 ////////////////////////////////////////
 // copy fonts, files
 ////////////////////////////////////////
@@ -81,6 +81,16 @@ gulp.task("files", function () {
   return gulp.src("./src/files/**/*").pipe(gulp.dest("./dist/files/"));
 });
 
+////////////////////////////////////////
+// webpack js
+////////////////////////////////////////
+gulp.task("js", function () {
+  return gulp
+    .src("./src/js/*.js")
+    .pipe(plumber(plumberNotify("JS")))
+    .pipe(webpack(require("./webpack.config.js")))
+    .pipe(gulp.dest("./dist/js"));
+});
 
 ////////////////////////////////////////
 // старт лайв сервера
@@ -103,6 +113,7 @@ gulp.task("watch", function () {
   gulp.watch("./src/imgs/**/*", gulp.parallel("images"));
   gulp.watch("./src/fonts/**/*", gulp.parallel("fonts"));
   gulp.watch("./src/files/**/*", gulp.parallel("files"));
+  gulp.watch("./src/js/**/*", gulp.parallel("js"));
 });
 
 ////////////////////////////////////////
@@ -112,7 +123,7 @@ gulp.task(
   "default",
   gulp.series(
     "clean",
-    gulp.parallel("html", "sass", "images", "fonts", "files"),
+    gulp.parallel("html", "sass", "images", "fonts", "files", "js"),
     gulp.parallel("server", "watch")
   )
 ); 
