@@ -1,5 +1,9 @@
 const gulp = require("gulp");
+
+//html
 const fileInclude = require("gulp-file-include");
+const htmlclean = require("gulp-htmlclean");
+
 //sass
 const sass = require("gulp-sass")(require("sass"));
 var sassGlob = require("gulp-sass-glob");
@@ -53,6 +57,7 @@ gulp.task("html:docs", function () {
     .pipe(changed("./docs/"))
     .pipe(plumber(plumberNotify("HTML")))
     .pipe(fileInclude(fileIncludeOptions))
+    .pipe(htmlclean())
     .pipe(gulp.dest("./docs/"));
 });
 
