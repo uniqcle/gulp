@@ -6,6 +6,7 @@ var sassGlob = require("gulp-sass-glob");
 const sourceMaps = require("gulp-sourcemaps");
 //const groupMedia = require("gulp-group-css-media-queries"); // вступает в конфликт с source maps
 const autoprefixer = require("gulp-autoprefixer");
+const csso = require("gulp-csso");
 
 const clean = require("gulp-clean");
 const fs = require("fs");
@@ -16,7 +17,6 @@ const webpack = require("webpack-stream");
 const babel = require("gulp-babel");
 const imagemin = require("gulp-imagemin");
 const changed = require("gulp-changed");
-
 
 //optimization function
 const plumberNotify = (title) => {
@@ -69,6 +69,7 @@ gulp.task("sass:docs", function () {
       .pipe(autoprefixer())
       .pipe(sassGlob())
       .pipe(sass())
+      .pipe(csso())
       //.pipe(groupMedia())
       .pipe(sourceMaps.write())
       .pipe(gulp.dest("./docs/css"))
