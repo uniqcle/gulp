@@ -33,6 +33,6 @@ gulp.task(
       "files:docs",
       "js:docs"
     ),
-    gulp.parallel("server:docs", "watch:docs")
+    gulp.parallel("server:docs")
   )
 );
