@@ -12,6 +12,7 @@ const sourceMaps = require("gulp-sourcemaps");
 //const groupMedia = require("gulp-group-css-media-queries"); // вступает в конфликт с source maps
 const autoprefixer = require("gulp-autoprefixer");
 const csso = require("gulp-csso");
+const webpCss = require("gulp-webp-css");
 
 //images
 const imagemin = require("gulp-imagemin");
@@ -81,6 +82,7 @@ gulp.task("sass:docs", function () {
       .pipe(autoprefixer())
       .pipe(sassGlob())
       .pipe(sass())
+      .pipe(webpCss())
       .pipe(csso())
       //.pipe(groupMedia())
       .pipe(sourceMaps.write())
